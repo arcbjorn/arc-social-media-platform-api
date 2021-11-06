@@ -2,7 +2,7 @@
 
 using FastAPI
 
-## Clone repository
+### Clone repository
 
 ```sh
 git clone <this-repo>
@@ -14,22 +14,22 @@ git clone <this-repo>
 python -V
 ```
 
-## Setup virtual environment (venv)
+### Setup virtual environment (venv)
 
 ```sh
 python3 -m venv venv
 ```
 
-## Activate venv and install dependencies
+### Activate venv and install dependencies
 
-**Important: check the correct way of activation depending on your shell. Consult [here.](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments)** (I use [fish shell](https://fishshell.com/))
+**Important:** check the correct way of activation depending on your shell. Consult [here.](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments) (I use [fish shell](https://fishshell.com/))
 
 ```sh
 source ./venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-## Run app in Development mode
+### Run app in Development mode
 
 ```sh
 uvicorn app.main:app --reload
