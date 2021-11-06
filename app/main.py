@@ -1,11 +1,14 @@
 from typing import Optional
 from fastapi import FastAPI, Response, status, HTTPException
+from fastapi.params import Depends
 from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+
+from sqlalchemy.orm.session import Session
 from . import models
-from .database import engine
+from .database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -60,9 +63,8 @@ async def root():
 
 
 @app.get("/posts")
-async def get_posts():
-    posts = cursor.execute("""SELECT * FROM posts """)
-    posts = cursor.fetchall()
+async def get_posts(db: Session = Depends(get_db)):
+    posts = db.query(models.Post).all()
     return {"data": posts}
 
 
