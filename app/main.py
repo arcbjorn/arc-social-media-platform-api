@@ -3,6 +3,9 @@ from typing import Optional
 from fastapi import FastAPI, Response, status, HTTPException
 from pydantic import BaseModel
 from random import randrange
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import time
 
 from starlette import status
 
@@ -13,6 +16,17 @@ class Post(BaseModel):
     conten: str
     published: bool = True
     rating: Optional[int] = None
+
+while True:
+    try:
+        conn = psycopg2.connect(host='localhost', database='social_media_platform',user='postgres', password='postgres', cursor_factory=RealDictCursor)
+        cursor = conn.cursor()
+        print("Database connection was succesfull")
+        break
+    except Exception as error:
+        print("Connecting to database failed")
+        print("Error", error)
+        time.sleep(2)
 
 my_posts = [
     {"title": "title1", "content": "content of post 1", "id": 1},
