@@ -4,6 +4,10 @@ from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+from . import models
+from .database import engine
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -93,7 +97,7 @@ async def delete_post(id: int):
     deleted_post = cursor.fetchone()
     conn.commit()
 
-    if deleted_post == None:
+    if deleted_post is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with id: {id} does not exist",
@@ -111,7 +115,7 @@ async def update_post(id: int, post: Post):
     updated_post = cursor.fetchone()
     conn.commit()
 
-    if updated_post == None:
+    if updated_post is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with id: {id} does not exist",
