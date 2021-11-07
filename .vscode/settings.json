@@ -4,6 +4,6 @@
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": ["--max-line-length=120"],
   "python.formatting.provider": "black",
-  "editor.formatOnPaste": true,
+  "editor.formatOnPaste": false,
   "editor.formatOnSave": true
 }
