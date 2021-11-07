@@ -1,50 +1,13 @@
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Depends
-import psycopg2
-from psycopg2.extras import RealDictCursor
-import time
-
 from sqlalchemy.orm.session import Session
+
 from . import models, schemas
 from .database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-while True:
-    try:
-        conn = psycopg2.connect(
-            host="localhost",
-            database="social_media_platform",
-            user="postgres",
-            password="postgres",
-            cursor_factory=RealDictCursor,
-        )
-        cursor = conn.cursor()
-        print("Database connection was succesfull")
-        break
-    except Exception as error:
-        print("Connecting to database failed")
-        print("Error", error)
-        time.sleep(2)
-
-my_posts = [
-    {"title": "title1", "content": "content of post 1", "id": 1},
-    {"title": "title2", "content": "content of post 2", "id": 2},
-]
-
-
-def find_post(id):
-    for p in my_posts:
-        if p["id"] == id:
-            return p
-
-
-def find_index_post(id):
-    for i, p in enumerate(my_posts):
-        if p["id"] == id:
-            return i
 
 
 @app.get("/")
