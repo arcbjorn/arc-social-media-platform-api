@@ -39,3 +39,8 @@ class User(BaseModel):
 
     class Config:
         orm_mode: True
+
+
+class UserLoginDto(BaseModel):
+    email: EmailStr
+    password: str
