@@ -16,12 +16,14 @@ async def root():
     return {"message": "Hello World"}
 
 
+# GET ALL POSTS
 @app.get("/posts", response_model=List[schemas.Post])
 async def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
 
 
+# CREATE POST
 @app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 async def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     new_post = models.Post(**post.dict())
@@ -32,6 +34,7 @@ async def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     return new_post
 
 
+# GET POST
 @app.get("/posts/{id}", response_model=schemas.Post)
 async def get_post(id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
@@ -44,6 +47,7 @@ async def get_post(id: int, db: Session = Depends(get_db)):
     return post
 
 
+# DELETE POST
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == id)
@@ -60,6 +64,7 @@ async def delete_post(id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
+# UPDATE POST
 @app.put("/posts/{id}", response_model=schemas.Post)
 async def update_post(
     id: int, updated_post: schemas.PostUpdate, db: Session = Depends(get_db)
@@ -79,3 +84,14 @@ async def update_post(
     db.commit()
 
     return post_query.first()
+
+
+# CREATE USER
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.User)
+async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    new_user = models.User(**user.dict())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
