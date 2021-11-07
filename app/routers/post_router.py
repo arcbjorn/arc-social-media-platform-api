@@ -8,7 +8,7 @@ from ..database import get_db
 
 router = APIRouter()
 
-router = APIRouter(prefix="/posts")
+router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
 # GET ALL POSTS
