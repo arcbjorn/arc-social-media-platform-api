@@ -3,8 +3,8 @@ from fastapi import Response, status, HTTPException, APIRouter
 from fastapi.params import Depends
 from sqlalchemy.orm.session import Session
 
-from .. import models, schemas
-from ..database import get_db
+from app import models, schemas, oauth2
+from app.database import get_db
 
 router = APIRouter()
 
@@ -13,14 +13,21 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 
 # GET ALL POSTS
 @router.get("/", response_model=List[schemas.Post])
-async def get_posts(db: Session = Depends(get_db)):
+async def get_posts(
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.oauth2.get_current_user),
+):
     posts = db.query(models.Post).all()
     return posts
 
 
 # CREATE POST
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-async def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
+async def create_post(
+    post: schemas.PostCreate,
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.oauth2.get_current_user),
+):
     new_post = models.Post(**post.dict())
     db.add(new_post)
     db.commit()
@@ -31,7 +38,11 @@ async def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
 
 # GET POST
 @router.get("/{id}", response_model=schemas.Post)
-async def get_post(id: int, db: Session = Depends(get_db)):
+async def get_post(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.oauth2.get_current_user),
+):
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
     if not post:
@@ -44,7 +55,11 @@ async def get_post(id: int, db: Session = Depends(get_db)):
 
 # DELETE POST
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_post(id: int, db: Session = Depends(get_db)):
+async def delete_post(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.oauth2.get_current_user),
+):
     post = db.query(models.Post).filter(models.Post.id == id)
 
     if post.first() is None:
@@ -62,7 +77,10 @@ async def delete_post(id: int, db: Session = Depends(get_db)):
 # UPDATE POST
 @router.put("/{id}", response_model=schemas.Post)
 async def update_post(
-    id: int, updated_post: schemas.PostUpdate, db: Session = Depends(get_db)
+    id: int,
+    updated_post: schemas.PostUpdate,
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.oauth2.get_current_user),
 ):
 
     post_query = db.query(models.Post).filter(models.Post.id == id)
