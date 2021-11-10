@@ -15,7 +15,7 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 @router.get("/", response_model=List[schemas.Post])
 async def get_posts(
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.oauth2.get_current_user),
+    current_user: schemas.User = Depends(oauth2.oauth2.get_current_user),
 ):
     posts = db.query(models.Post).all()
     return posts
@@ -26,7 +26,7 @@ async def get_posts(
 async def create_post(
     post: schemas.PostCreate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.oauth2.get_current_user),
+    current_user: schemas.User = Depends(oauth2.oauth2.get_current_user),
 ):
     new_post = models.Post(owner_id=current_user.id, **post.dict())
     db.add(new_post)
@@ -41,7 +41,7 @@ async def create_post(
 async def get_post(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.oauth2.get_current_user),
+    current_user: schemas.User = Depends(oauth2.oauth2.get_current_user),
 ):
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
@@ -59,7 +59,7 @@ async def get_post(
 async def delete_post(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.oauth2.get_current_user),
+    current_user: schemas.User = Depends(oauth2.oauth2.get_current_user),
 ):
     post_query = db.query(models.Post).filter(models.Post.id == id)
 
@@ -89,7 +89,7 @@ async def update_post(
     id: int,
     updated_post: schemas.PostUpdate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.oauth2.get_current_user),
+    current_user: schemas.User = Depends(oauth2.oauth2.get_current_user),
 ):
 
     post_query = db.query(models.Post).filter(models.Post.id == id)
