@@ -5,6 +5,25 @@ from datetime import datetime
 from pydantic.networks import EmailStr
 
 
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class User(BaseModel):
+    id: int
+    email: EmailStr
+    created_at: datetime
+
+    class Config:
+        orm_mode: True
+
+
+class UserLoginDto(BaseModel):
+    email: EmailStr
+    password: str
+
+
 class PostBase(BaseModel):
     title: str
     content: str
@@ -23,28 +42,11 @@ class PostUpdate(PostBase):
 class Post(PostBase):
     id: int
     created_at: datetime
+    owner_id: int
+    owner: User
 
     class Config:
         orm_mode: True
-
-
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-
-
-class User(BaseModel):
-    id: int
-    email: EmailStr
-    created_at: datetime
-
-    class Config:
-        orm_mode: True
-
-
-class UserLoginDto(BaseModel):
-    email: EmailStr
-    password: str
 
 
 class Token(BaseModel):
