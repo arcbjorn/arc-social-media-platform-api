@@ -2,7 +2,7 @@
   "editor.defaultFormatter": "ms-python.python",
 
   "python.linting.flake8Enabled": true,
-  "python.linting.flake8Args": ["--max-line-length=120"],
+  "python.linting.flake8Args": ["--max-line-length=130"],
   "python.formatting.provider": "black",
   "editor.formatOnPaste": false,
   "editor.formatOnSave": true
