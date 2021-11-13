@@ -1,6 +1,6 @@
 # Social media platform backend
 
-using FastAPI, SQLAlchemy, PostgreSQL
+using FastAPI, SQLAlchemy, PostgreSQL, Alembic
 
 ### Clone repository
 
