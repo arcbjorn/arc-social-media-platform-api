@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 from pydantic.networks import EmailStr
+from pydantic.types import conint
 
 
 class UserCreate(BaseModel):
@@ -56,3 +57,8 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+
+class VoteDto(BaseModel):
+    post_id: int
+    dir: conint(le=1)
