@@ -29,6 +29,17 @@ source ./venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
+### Create .env file & set up environmental variables using .env.example
+
+### Set up database (create tables & relations) with Alembic
+
+```sh
+# generate SQL
+alembic revision --autogenerate -m "Create users, posts, votes tables"
+# run SQL
+alembic revision upgrade head
+```
+
 ### Run app in Development mode
 
 ```sh
