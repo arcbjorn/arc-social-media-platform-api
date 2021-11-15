@@ -45,3 +45,27 @@ alembic revision upgrade head
 ```sh
 uvicorn app.main:app --reload
 ```
+
+**Run app with Docker**
+
+```sh
+# build container
+docker build -t social-media-platform-api .
+# start container
+docker run social-media-platform-api
+```
+
+### Run app with Docker Compose in Development mode
+
+```sh
+# build & start services
+docker-compose -f docker-compose-dev.yaml up -d
+# stop services
+docker-compose -f docker-compose-dev.yaml down -d
+```
+
+### Run tests
+
+```sh
+pytest tests/ -v -s
+```
