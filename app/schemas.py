@@ -6,7 +6,7 @@ from pydantic.networks import EmailStr
 from pydantic.types import conint
 
 
-class UserCreate(BaseModel):
+class UserCreateDto(BaseModel):
     email: EmailStr
     password: str
 
